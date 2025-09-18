@@ -1,4 +1,4 @@
-gggggggggg#!/usr/bin/env bash
+#!/usr/bin/env bash
 #
 # Kubernetes one‑shot installer and cluster bootstrap script
 #
