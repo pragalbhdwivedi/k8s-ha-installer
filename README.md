@@ -23,7 +23,7 @@ It combines two scripts:
   - `/var/log/k8s-one.log` on nodes  
   - `/var/log/k8s-controller.log` on the orchestrator
 
----
+```mermaid
 
 flowchart TD
     A["Control Machine\nk8s-controller.sh"] -->|SSH| B["etcd1\nROLE=etcd"];
