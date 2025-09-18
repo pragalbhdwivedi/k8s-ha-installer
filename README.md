@@ -25,21 +25,18 @@ It combines two scripts:
 
 ---
 
-## Architecture
-
-```mermaid
 flowchart TD
-    A[Control Machine<br/>k8s-controller.sh] -->|SSH| B[etcd1<br/>ROLE=etcd]
-    A -->|SSH| C[cp1<br/>ROLE=cp (first)]
-    A -->|SSH| D[cp2<br/>ROLE=cp (join)]
-    A -->|SSH| E[w1<br/>ROLE=worker]
-    A -->|SSH| F[w2<br/>ROLE=worker]
-    A -->|SSH| G[w3<br/>ROLE=worker]
-    A -->|SSH| H[w4<br/>ROLE=worker]
+    A["Control Machine\nk8s-controller.sh"] -->|SSH| B["etcd1\nROLE=etcd"];
+    A -->|SSH| C["cp1\nROLE=cp (first)"];
+    A -->|SSH| D["cp2\nROLE=cp (join)"];
+    A -->|SSH| E["w1\nROLE=worker"];
+    A -->|SSH| F["w2\nROLE=worker"];
+    A -->|SSH| G["w3\nROLE=worker"];
+    A -->|SSH| H["w4\nROLE=worker"];
 
-    B --> C
-    C --> D
-    C --> E
-    C --> F
-    C --> G
-    C --> H
+    B --> C;
+    C --> D;
+    C --> E;
+    C --> F;
+    C --> G;
+    C --> H;
