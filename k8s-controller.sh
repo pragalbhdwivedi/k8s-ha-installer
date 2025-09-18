@@ -30,11 +30,15 @@ set -euo pipefail
 # Where to write logs
 LOG="/var/log/k8s-controller.log"
 
-# Colours for status output
-CLR_GREEN="\033[32m"
-CLR_YELLOW="\033[33m"
-CLR_RED="\033[31m"
-CLR_RESET="\033[0m"
+if [ -t 1 ]; then
+  CLR_GREEN="\033[32m"
+  CLR_YELLOW="\033[33m"
+  CLR_RED="\033[31m"
+  CLR_RESET="\033[0m"
+else
+  CLR_GREEN=""; CLR_YELLOW=""; CLR_RED=""; CLR_RESET=""
+fi
+
 
 # Write a message to stdout and append to log
 log_info() {
@@ -152,7 +156,7 @@ main() {
   touch "$LOG"
   log_info "Starting Kubernetes cluster orchestrator..."
   # Prompt for GitHub URL for node installation script
-  prompt_if_empty GITHUB_URL "Enter raw GitHub URL of node install script (k8s-complete.sh)" ""
+  prompt_if_empty GITHUB_URL "Enter raw GitHub URL of node install script (k8s-complete.sh)" "https://raw.githubusercontent.com/pragalbhdwivedi/k8s-ha-installer/main/k8s-complete.sh"
   if [ -z "$GITHUB_URL" ]; then
     die "GitHub URL is required to download node script."
   fi
