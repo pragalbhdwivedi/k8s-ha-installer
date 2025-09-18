@@ -21,6 +21,10 @@
 #     provide its raw URL when prompted.
 #   * Logs all operations to /var/log/k8s-controller.log.
 
+die() {
+  echo "[ERROR] $1" | tee -a "$LOG"
+  exit 1
+}
 set -euo pipefail
 
 # Where to write logs
@@ -106,12 +110,9 @@ print_status_table() {
 install_remote() {
   local ip="$1" role="$2" envs="$3"
   log_info "Installing role $role on $ip..."
-  # Compose remote command: download script and execute it with env vars.
-  # We wrap commands in single quotes; variables are expanded on local side.
-  # Use curl to download script to a temp file. Use bash -s to run it.
-  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@"$ip" bash -c \
-    "\"${envs}\" curl -fsSL \"${GITHUB_URL}\" -o /tmp/k8s-install.sh && chmod +x /tmp/k8s-install.sh && /tmp/k8s-install.sh" >>"$LOG" 2>&1
-  if [ $? -ne 0 ]; then
+  if ! ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@"$ip" \
+    "export ${envs}; curl -fsSL \"${GITHUB_URL}\" -o /tmp/k8s-install.sh && \
+     chmod +x /tmp/k8s-install.sh && /tmp/k8s-install.sh" >>"$LOG" 2>&1; then
     die "Installation failed on $ip ($role). Check $LOG for details."
   fi
   log_info "Installation completed on $ip ($role)."
